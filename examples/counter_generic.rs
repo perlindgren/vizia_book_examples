@@ -43,7 +43,10 @@ impl Counter {
             HStack::new(cx, |cx| {
                 Button::new(
                     cx,
-                    |ex| ex.emit(CounterEvent::Decrement),
+                    |ex| {
+                        ex.emit(CounterEvent::Decrement);
+                        println!("dec");
+                    },
                     |cx| Label::new(cx, "Decrement"),
                 );
                 Button::new(
@@ -65,8 +68,8 @@ pub struct AppData {
 }
 
 impl Model for AppData {
-    fn event(&mut self, cx: &mut EventContext, event: &mut Event) {
-        event.map(|counter_event, meta| match counter_event {
+    fn event(&mut self, _cx: &mut EventContext, event: &mut Event) {
+        event.map(|counter_event, _meta| match counter_event {
             CounterEventExt::OnUpdate(data) => self.count = *data,
         });
     }
